@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="css/sample.css">
+<title>GoogleBook検索</title>
+</head>
+<body>
+
+  <header>
+    <h1>GoogleBooks検索</h1>
+    <p>
+      <input type="text" id="keyword" value="レスポンシブWeb">
+      <button id="readbook">データ読み込み</button>
+      <button id ="search">検索</button>
+    </p>
+  </header>
+
+  <main>
+    <p id="content">    </p>
+  </main>
+
+<script src="js/jquery-3.5.1.min.js"></script>
+<script>
+// 手順
+// 1. $.get() を使って 情報を取得する
+$("#readbook").on("click", function () {
+$.get("https://www.googleapis.com/books/v1/volumes?q=jQuery",function(data){
+const items = data.items;
+
+let view = ""; 
+for (let i = 0; i < items.length; i++) {
+  const item = items[i];
+  const title = item.volumeInfo.title
+  const publisher = item.volumeInfo.publisher
+  view += "<ul><li>題名 :" + title + "   /   " + publisher + "</li></ul>";
+}
+
+    $("#content").html(view);
+})
+// $("#readbook").on("click", function () {
+// $('#keyword').quicksearch('#title li');
+// });
+});
+
+//ここから先：検索ボタンの稼働確認
+searchWord = function(){
+  var searchResult,
+      searchText = $(keyword).val(), // 検索ボックスに入力された値
+      targetText,
+      hitNum;
+ 
+  // 検索結果を格納するための配列を用意
+  searchResult = [];
+ 
+  // 検索結果エリアの表示を空にする
+  $('#search-result__list').empty();
+  $('.search-result__hit-num').empty();
+ 
+  // 検索ボックスに値が入ってる場合
+  if (searchText != '') {
+    $("https://www.googleapis.com/books/v1/volumes?q=jQuery").each(function() {
+      targetText = $(keyword).text();
+ 
+      // 検索対象となるリストに入力された文字列が存在するかどうかを判断
+      if (targetText.indexOf(searchText) != -1) {
+        // 存在する場合はそのリストのテキストを用意した配列に格納
+        searchResult.push(targetText);
+      }
+    });
+ 
+    // 検索結果をページに出力
+    for (var i = 0; i < searchResult.length; i ++) {
+      $('<span>').text(searchResult[i]).appendTo('#search-result__list');
+    }
+ 
+    // ヒットの件数をページに出力
+    hitNum = '<span>検索結果</span>：' + searchResult.length + '件見つかりました。';
+    $('.search-result__hit-num').append(hitNum);
+  }
+};
+ 
+// searchWordの実行
+$('#search-text').on('input', searchWord);
+$("#search-result__list").html(view);
+
+
+    //view = view + <ul><li>題名 : " + title + <ul><li>";
+
+// 2. JSONデータ構造を基に本のタイトルを取得する
+
+// 3. 本のタイトル情報をHTMLに出力する
+
+// ---ここからは課題！
+
+// 4. クリックイベントで括る
+
+// 5. id="keyword"の入力値を取得 → URLの"?q=jquery"の"queryの文字を取得した入力値（変数）に変える"
+//$('#keyword').quicksearch('#title li');
+// 6. 出版社も表示してみよう！（データ構造はconsole.logで確認！！）
+
+// $.get() を使う[開始]
+
+// $.get() を使う[終了]
+
+
+
+
+
+
+</script>
+</body>
+</html>
